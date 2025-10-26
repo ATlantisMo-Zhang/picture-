@@ -30,8 +30,24 @@ jobs:
       - name: Install Mermaid CLI
         run: npm i -g @mermaid-js/mermaid-cli@10.9.1
 
+      - name: Write Puppeteer config (disable sandbox on GH Actions)
+        run: |
+          cat > puppeteer.json <<'JSON'
+          {
+            "args": ["--no-sandbox", "--disable-setuid-sandbox"]
+          }
+          JSON
+
       - name: Render PNG
-        run: mmdc -i .github/workflows/project-plan-gantt.mmd -o schedule.png -b white -s 1.2
+        run: mmdc -i .github/workflows/project-plan-gantt.mmd -o schedule.png -b white -s 1.2 -p puppeteer.json
+
+      - name: Upload PNG artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: schedule
+          path: schedule.png
+          if-no-files-found: error
+          retention-days: 7
 
       - name: Commit PNG
         run: |

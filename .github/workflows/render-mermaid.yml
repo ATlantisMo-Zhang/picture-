@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'project-plan-gantt.mmd'
+      - '.github/workflows/project-plan-gantt.mmd'
       - '.github/workflows/render-mermaid.yml'
 
 permissions:
@@ -31,7 +31,7 @@ jobs:
         run: npm i -g @mermaid-js/mermaid-cli@10.9.1
 
       - name: Render PNG
-        run: mmdc -i project-plan-gantt.mmd -o schedule.png -b white -s 1.2
+        run: mmdc -i .github/workflows/project-plan-gantt.mmd -o schedule.png -b white -s 1.2
 
       - name: Commit PNG
         run: |
